@@ -33,7 +33,8 @@
 %endfor
       <tfoot>
         <tr>
-          <td colspan='4'>${ h.link_to('Add to schedule', url=h.url_for(controller='schedule', action='new', time_slot=c.time_slot.id)) }</td>
+			<td colspan='4'>${ h.link_to('Add to schedule', url=h.url_for(controller='schedule', action='new', id=None, time_slot=c.time_slot.id)) }</td>
+		</tr>
       </tfoot>
     </table>
     <p>

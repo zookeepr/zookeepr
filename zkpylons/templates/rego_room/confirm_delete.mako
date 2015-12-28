@@ -1,6 +1,7 @@
 <%inherit file="/base.mako" />
 
 ${ h.form(url=h.url_for()) }
+<h2>Delete Rego Room</h2>
 <p>
 Are you sure you want to delete this room detail?<br/>
 ${ h.submit('submit', 'Yes, delete') }

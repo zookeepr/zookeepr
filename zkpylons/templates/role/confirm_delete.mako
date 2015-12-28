@@ -1,5 +1,5 @@
 <%inherit file="/base.mako" />
-<h1>Delete role</h1>
+<h1>Delete Role</h1>
 
 ${ h.form(h.url_for()) }
 <p> Are you sure you want to delete the "${ c.role.name }" role (number

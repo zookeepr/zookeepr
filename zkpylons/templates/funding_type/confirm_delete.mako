@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>Delete funding type</h2>
+<h2>Delete Funding Type</h2>
 
 ${ h.form(h.url_for()) }
 

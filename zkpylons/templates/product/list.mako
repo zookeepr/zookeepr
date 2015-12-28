@@ -12,7 +12,7 @@
   graph_data = []
 %>
 
-    <h2>List products</h2>
+    <h2>List Products</h2>
 % if len(c.product_categories) > 0:
     <h3>Categories:</h3> <ul>
 %   for category in c.product_categories:

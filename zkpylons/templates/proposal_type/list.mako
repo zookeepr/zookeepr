@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>List proposal types</h2>
+<h2>List Proposal Types</h2>
 
 <table>
 

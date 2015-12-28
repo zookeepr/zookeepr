@@ -1,11 +1,10 @@
 from datetime import datetime, timedelta
-import pytest
 import re
 
 from zk.model import Person, PasswordResetConfirmation
 from routes import url_for
 
-from .fixtures import PersonFactory, PasswordResetConfirmationFactory, ConfigFactory
+from .fixtures import PersonFactory, PasswordResetConfirmationFactory
 from .utils import do_login, isSignedIn
 
 class TestPersonController(object):
@@ -30,10 +29,6 @@ class TestPersonController(object):
 
     def test_signin_signout(self, app, db_session):
         """Test person sign in"""
-
-        # create necessary base config
-        #ConfigFactory(key = 'sponsors', value = {'top':[],'slideshow':[]})
-
 
         # create a user
         p = PersonFactory()
@@ -122,7 +117,7 @@ class TestPersonController(object):
         # click on the forgotten password link
         resp = resp.click('Forgotten your password?')
 
-        f = resp.forms[1] # TODO: Fragile, Persona is [0]
+        f = resp.forms['pwreset-form']
         f['email_address'] = p.email_address
         f.submit()
 
@@ -150,7 +145,7 @@ class TestPersonController(object):
         resp = app.get(url_match.group(1))
 
         # set password
-        f = resp.form
+        f = resp.forms['reset-form']
         f['password'] = 'passwdtest'
         f['password_confirm'] = 'passwdtest'
         resp = f.submit(extra_environ=dict(REMOTE_ADDR='0.0.0.0'))
@@ -173,7 +168,7 @@ class TestPersonController(object):
 
         resp = app.get(url_for(controller='person', action='signin'))
         resp = resp.click('Forgotten your password?')
-        f = resp.forms[1] # TODO: Switch to id
+        f = resp.forms['pwreset-form']
         f['email_address'] = 'nonexistent@example.org'
         resp = f.submit()
 
@@ -192,14 +187,14 @@ class TestPersonController(object):
         # Email sent
         assert "nonexistent@example.org" in smtplib.existing.to_addresses
 
-
-    @pytest.mark.xfail # Reported as #414
     def test_confirm_404(self, app):
         """Test that an attempt to access an invalid url_hash throws a 404"""
         resp = app.get(url_for(action='reset_password',
-            controller='person',
-            url_hash='n'), status=404)
-        assert resp.status_code == 404
+                               controller='person',
+                               url_hash='n'
+                              ),
+                       status=404
+                      )
 
     def test_confirm_old_url_hash(self, app, db_session):
         """Test that old url_hashes are caught"""
@@ -215,7 +210,7 @@ class TestPersonController(object):
         # TODO: Ensure confirm must match
 
         # Prompted to enter new password
-        f = resp.form
+        f = resp.forms['reset-form']
         f['password'] = 'test'
         f['password_confirm'] = 'test'
         resp =  f.submit(extra_environ=dict(REMOTE_ADDR='0.0.0.0'))
@@ -248,7 +243,7 @@ class TestPersonController(object):
         # showing the email on the page
         assert c.email_address in unicode(resp.body, 'utf-8')
 
-        f = resp.form
+        f = resp.forms['reset-form']
         f['password'] = 'test'
         f['password_confirm'] = 'test'
         resp =  f.submit(extra_environ=dict(REMOTE_ADDR='0.0.0.0'))
@@ -278,7 +273,7 @@ class TestPersonController(object):
 
         resp = app.get(url_for(controller='person', action='signin'))
         resp = resp.click('Forgotten your password?')
-        f = resp.forms[1]
+        f = resp.forms['pwreset-form']
         f['email_address'] = p.email_address
         f.submit()
 
@@ -294,7 +289,7 @@ class TestPersonController(object):
         """
 
         resp = app.get(url_for(controller='person', action='signin', id=None))
-        f = resp.forms[1]
+        f = resp.forms['signin-form']
         f['person.email_address'] = 'test@failure.zk'
         f['person.password'] = 'broken'
         resp = f.submit()
@@ -371,7 +366,7 @@ class TestPersonController(object):
 
         # Ensure login works
         resp = resp.click('Sign in')
-        f = resp.forms[1]
+        f = resp.forms['signin-form']
         f['person.email_address'] = 'testguy@example.org'
         f['person.password'] = 'test'
         resp = f.submit(extra_environ=dict(REMOTE_ADDR='0.0.0.0'))

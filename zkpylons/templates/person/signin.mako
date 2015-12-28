@@ -16,7 +16,7 @@ ${ h.end_form() }
 
 <p>Otherwise enter your credentials in the following form.</p>
 
-${ h.form(h.url_for(), method='post') }
+${ h.form(h.url_for(), method='post', id='signin-form') }
 
     <p class="label"><label for="person.email_address">Email address:</label></p>
     <p class="entries">${ h.text('person.email_address', size=40) }</p>

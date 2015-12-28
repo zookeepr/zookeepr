@@ -1,10 +1,19 @@
 import unittest
 
 from zkpylons.config.routing import make_map
-from routes import url_for
+from routes import url_for, request_config
 
 class TestRouting(unittest.TestCase):
     def setUp(self):
+        # Set up a local state because we aren't sure what has been shoveled into the shared one
+        class Obby(object): pass
+        myobj = Obby()
+        class Callable(object):
+            def __call__(self):
+                return myobj
+        
+        request_config().request_local = Callable() 
+
         config = {
             'pylons.paths' : { 'controllers' : None },
             'debug' : True,

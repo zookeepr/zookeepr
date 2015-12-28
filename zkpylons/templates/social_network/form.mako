@@ -1,7 +1,7 @@
         <p class="label"><span class="mandatory">*</span><label for="social_network.name">Name:</label></p>
         <p class="entries">${ h.text('social_network.name') }</p>
 
-        <p class="label"><span class="mandatory">*</span><label for="social_network.logo">Logo name:</label></p>
+        <p class="label"><span class="mandatory">*</span><label for="social_network.logo">Logo filename:</label></p>
         <p class="entries">${ h.text('social_network.logo') }</p>
 
         <p class="label"><label for="social_network.url">URL:</label></p>

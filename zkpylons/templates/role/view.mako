@@ -1,5 +1,5 @@
 <%inherit file="/base.mako" />
-<h1>View role</h1>
+<h1>View Role</h1>
 
 <table>
   <tr class="odd">

@@ -5,11 +5,13 @@
 </%def>
 
 <%inherit file="/base.mako" />
+<% import markupsafe %>
+
 
     <a name="summary"></a>
-    <h2>View ceiling</h2>
+    <h2>View Ceiling</h2>
 
-    <p><b>Name:</b> ${ c.ceiling.name } - ${ h.link_to('Special cases', url=h.url_for(action='special_cases')) }</p>
+	<p><b>Name:</b> ${ c.ceiling.name }</p>
 % if c.ceiling.parent:
     <p><b>Parent:</b> ${ h.link_to(c.ceiling.parent.name, h.url_for(id=c.ceiling.parent.id)) } (This ceiling will not become available until the parent is not available)
 % endif
@@ -207,10 +209,132 @@
   menu += '<li><a href="#unpaid_invoices">Unpaid Invoices</a></li>'
   menu += '<li><a href="#invalid_invoices">Invalid Invoices</a></li>'
 
+  menu +=  '<li><a href="#diet_special_paid">Diet/Special - Paid</a></li>'
+  menu += '<li><a href="#diet_special_invoiced">Diet/Special - Invoiced</a></li>'
+  menu += '<li><a href="#diet_paid">Diet - Paid</a></li>'
+  menu += '<li><a href="#diet_invoiced">Diet - Invoiced</a></li>'
+  menu += '<li><a href="#under18_paid">Under 18 - Paid</a></li>'
+  menu += '<li><a href="#under18_invoiced">Under 18 - Invoiced</a></li>'
+
   return menu
 %>
 </%def>
 <%def name="title()">
 Ceiling - ${ c.ceiling.name } - ${ parent.title() }
 </%def>
+
+
+<%
+	paid_special_diet = { s.person_id : s for s in c.specials if s.is_paid and (s.diet or s.special)}.values()
+	unpaid_special_diet = { s.person_id : s for s in c.specials if not s.is_paid and (s.diet or s.special)}.values()
+
+	paid_diet_keys = { s.diet : 1 for s in c.specials if s.is_paid and s.diet }.keys()
+	paid_diet = {}
+	for key in paid_diet_keys:
+		paid_diet[key] = [s for s in c.specials if s.is_paid and s.diet == key]
+	unpaid_diet_keys = { s.diet : 1 for s in c.specials if not s.is_paid and s.diet }.keys()
+	unpaid_diet = {}
+	for key in unpaid_diet_keys:
+		unpaid_diet[key] = [s for s in c.specials if not s.is_paid and s.diet == key]
+
+	paid_u18 = [s for s in c.specials if s.is_paid and s.u18]
+	unpaid_u18 = [s for s in c.specials if not s.is_paid and s.u18]
+
+%>
+<h3 id="diet_special_paid">Diet/Special - Paid</h3>
+${ diet_special(paid_special_diet) }
+
+<h3 id="diet_special_invoiced">Diet/Special - Invoiced (Not Paid)</h3>
+${ diet_special(unpaid_special_diet) }
+
+<h3 id="diet_paid">Diet - Paid</h3>
+${ diet(paid_diet) }
+
+<h3 id="diet_invoiced">Diet - Invoiced (Not Paid)</h3>
+${ diet(unpaid_diet) }
+
+<h3 id="under18_paid">Under 18 - Paid</h3>
+${ under18(paid_u18) }
+
+<h3 id="under18_invoiced">Under 18 - Invoiced (Not Paid)</h3>
+${ under18(unpaid_u18) }
+
+<%def name="diet_special(data)">
+<table>
+  <thead><tr>
+    <th>Person</th>
+    <th>Rego ID</th>
+    <th>Product</th>
+    <th>Diet</th>
+    <th>Special Needs</th>
+  </tr></thead>
+  <tbody>
+	% if len(data):
+		% for s in data:
+			<tr>
+				<td>${ h.link_to(s.fullname, h.url_for(controller='person', action='view', id=s.person_id)) }</td>
+				<td>${ h.link_to('rego id: ' + str(s.reg_id), url=h.url_for(controller='registration', action='view', id=s.reg_id)) }</td>
+				<td>${ s.product }</td>
+				<td>${ s.diet }</td>
+				<td>${ s.special }</td>
+			</tr>
+			% for note in s.notes:
+				<tr>
+					<td>&nbsp;</td>
+					<td colspan="4">${ note.note }</td>
+				</tr>
+			% endfor
+		% endfor
+	% else:
+		<tr>
+			<td colspan="5">No entries</td>
+		</tr>
+	% endif
+  </tbody>
+</table>
+</%def>
+
+<%def name="diet(data)">
+<table>
+  <thead><tr>
+    <th>Diet</th>
+    <th>People</th>
+  </tr></thead>
+  <tbody>
+	% for diet in data:
+		<tr>
+			<td>${ diet }</td>
+			<td>${ markupsafe.Markup(", ".join([h.link_to(e.fullname, h.url_for(controller='person', action='view', id=e.person_id)) for e in data[diet]])) }</td>
+		</tr>
+	% endfor
+	% if len(data) == 0:
+		<tr><td colspan="2">No entries</td></tr>
+	% endif
+  </tbody>
+</table>
+</%def>
+
+<%def name="under18(data)">
+<table>
+  <thead><tr>
+    <th>Person</th>
+    <th>Rego ID</th>
+    <th>Product</th>
+  </tr></thead>
+  <tbody>
+	% for u in data:
+		<tr>
+			<td>${ h.link_to(u.fullname, h.url_for(controller='person', action='view', id=u.person_id)) }</td>
+			<td>${ h.link_to('rego id: ' + str(u.reg_id), url=h.url_for(controller='registration', action='view', id=u.reg_id)) }</td>
+			<td>${ u.product }</td>
+		</tr>
+	% endfor
+	% if len(data) == 0:
+		<tr><td colspan="3">No entries</td></tr>
+	% endif
+  </tbody>
+</table>
+</%def>
+
+
 

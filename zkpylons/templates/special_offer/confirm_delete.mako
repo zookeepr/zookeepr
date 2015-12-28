@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>Delete special offer</h2>
+<h2>Delete Special Offer</h2>
 
 ${ h.form(h.url_for()) }
 

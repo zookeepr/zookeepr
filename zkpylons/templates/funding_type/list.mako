@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>List funding types</h2>
+<h2>List Funding Types</h2>
 
 <table>
 

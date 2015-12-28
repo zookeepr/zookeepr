@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-    <h2>New Fulfilment Status</h2>
+    <h2>New Fulfilment Group</h2>
 
     ${ h.form(h.url_for(action='new')) }
 <%include file="form.mako" />

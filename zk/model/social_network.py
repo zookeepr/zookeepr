@@ -23,6 +23,7 @@ class SocialNetwork(Base):
       cascade="all, delete-orphan",
       backref='social_network')
     people = association_proxy('by_person', 'account_name')
+    # Note: You can't set via the people attribute
 
 
     def __init__(self, **kwargs):

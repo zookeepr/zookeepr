@@ -1,8 +1,9 @@
 <p><b>For registration:</b> </p>
-<p><b>By:</b> ${ h.link_to(c.rego_room.rego.person.firstname + ' ' +
-c.rego_room.rego.person.lastname, h.url_for(controller='person',
+${ h.link_to(c.rego_room.rego.person.fullname, h.url_for(controller='person',
 action='view', id=c.rego_room.rego.person.id)) },
 ${ h.link_to('View Registration', h.url_for(controller='registration', action='view', id=c.rego_room.rego.id)) }</p>
+<p><b>By:</b> ${ h.link_to(c.rego_room.by.fullname, h.url_for(controller='person',
+action='view', id=c.rego_room.by.id)) },
 
 <p><b>Room number:</b> ${ c.rego_room.room }</p>
 

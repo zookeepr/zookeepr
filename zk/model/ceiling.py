@@ -31,14 +31,6 @@ class Ceiling(Base):
     # relations
     parent = sa.orm.relation(lambda: Ceiling, backref='children', remote_side=[id])
 
-    def __init__(self, parent=None, name=None, max_sold=None, available_from=None, available_until=None, products=[]):
-        self.parent = parent
-        self.name = name
-        self.max_sold = max_sold
-        self.available_from = available_from
-        self.available_until = available_until
-        self.products = products
-
     def qty_sold(self):
         qty = 0
         for p in self.products:

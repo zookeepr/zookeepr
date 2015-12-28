@@ -46,7 +46,7 @@ class DoubleSession(object):
     # Some files use relative paths, which means you can kinda guess at it
     # The best way around this is to configure both Session objects
     # But then operations frequently have to be applied to both
-    # This class wraps operations I need for testing, and applies both
+    # This class wraps operations needed for testing, and applies both
 
     def __init__(self, session1, session2):
         self.s1 = session1
@@ -74,6 +74,9 @@ class DoubleSession(object):
 
     def query(self, cls):
         return self.s1.query(cls)
+
+    def execute(self, *args, **kwargs):
+        return self.s1.execute(*args, **kwargs)
 
 base_general_config = {
         'sponsors'          : {"top":[],"slideshow":[]},

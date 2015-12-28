@@ -1,10 +1,11 @@
 """Pylons environment configuration"""
 import os
 import re
+import sys
 
 from mako.lookup import TemplateLookup
+from mako import exceptions
 from pylons import config
-from pylons.error import handle_mako_error
 import sqlalchemy
 
 import zkpylons.lib.app_globals as app_globals
@@ -16,6 +17,16 @@ from zkpylons.model.config import Config
 from zkpylons.config.zkpylons_config import initialise_file_paths
 
 from pylons.configuration import PylonsConfig
+
+
+def handle_mako_error(context, exc):
+    # Three term exception should put the Mako stack in as the exception stack trace
+    # Unfortunately it doesn't work, or it gets rewritten again
+    print (exceptions.text_error_template().render())
+
+    st = sys.exc_traceback
+    raise (exc, None, st)
+
 
 def load_environment(global_conf, app_conf):
     """Configure the Pylons environment via the ``pylons.config``

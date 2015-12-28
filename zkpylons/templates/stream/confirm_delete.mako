@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>Delete stream</h2>
+<h2>Delete Stream</h2>
 
 ${ h.form(h.url_for()) }
 

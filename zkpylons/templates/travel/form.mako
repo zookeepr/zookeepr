@@ -1,8 +1,8 @@
 <table>
   <tr>
-    <th><label for="person.origin_airport">Origin</label></th>
+    <th><label for="travelorigin_airport">Origin</label></th>
     <th>&nbsp;</th>
-    <th><label for="person.destination_airport">Destination</label></th>
+    <th><label for="traveldestination_airport">Destination</label></th>
   </tr>
   <tr>
     <td>${ h.text('travel.origin_airport') }</td>

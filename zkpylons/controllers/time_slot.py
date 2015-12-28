@@ -80,10 +80,10 @@ class TimeSlotController(BaseController):
         c.time_slot = TimeSlot.find_by_id(id)
 
         defaults = h.object_to_defaults(c.time_slot, 'time_slot')
-        defaults['time_slot.start_date'] = c.time_slot.start_time.strftime('%d/%m/%y')
-        defaults['time_slot.start_time'] = c.time_slot.start_time.strftime('%H:%M:%S')
-        defaults['time_slot.end_date'] = c.time_slot.end_time.strftime('%d/%m/%y')
-        defaults['time_slot.end_time'] = c.time_slot.end_time.strftime('%H:%M:%S')
+        defaults['time_slot.start_date'] = c.time_slot.start_time.strftime('%d/%m/%Y')
+        defaults['time_slot.start_time'] = c.time_slot.start_time.strftime('%H:%M')
+        defaults['time_slot.end_date'] = c.time_slot.end_time.strftime('%d/%m/%Y')
+        defaults['time_slot.end_time'] = c.time_slot.end_time.strftime('%H:%M')
 
         form = render('/time_slot/edit.mako')
         return htmlfill.render(form, defaults)

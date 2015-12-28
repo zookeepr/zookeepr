@@ -41,7 +41,6 @@ def make_map(config):
     map.connect('/programme/schedule/ical',           controller='schedule', action='ical')
     map.connect('/programme/schedule/json',           controller='schedule', action='json')
     map.connect('/programme/schedule/{day}',          controller='schedule', action='table', day=None)
-    map.connect('/programme/schedule/view_talk/{id}', controller='schedule', action='table_view', id=None)
     map.connect('/programme/schedule/video',          controller='schedule', action='video_room', room=None)
     map.connect('/programme/schedule/video/{room}',   controller='schedule', action='video_room', room=None)
     map.connect('/event/new_proposals',               controller='event', action='new_proposals')

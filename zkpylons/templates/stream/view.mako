@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-    <h2>View stream</h2>
+    <h2>View Stream</h2>
 
     <p><b>Name:</b> ${ c.stream.name }<br></p>
 

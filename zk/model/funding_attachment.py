@@ -24,6 +24,8 @@ class FundingAttachment(Base):
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
 
+    funding = sa.orm.relation('Funding')
+
 
     def __init__(self, **kwargs):
         # remove the args that should never be set via creation

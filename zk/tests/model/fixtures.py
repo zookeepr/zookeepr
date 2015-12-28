@@ -17,9 +17,24 @@ from zk.model.url_hash import URLHash
 from zk.model.product_category import ProductCategory
 from zk.model.product import Product
 from zk.model.ceiling import Ceiling
-from zk.model.fulfilment import Fulfilment, FulfilmentItem, FulfilmentType, FulfilmentStatus
+from zk.model.fulfilment import Fulfilment, FulfilmentItem, FulfilmentType, FulfilmentStatus, FulfilmentGroup
+from zk.model.event_type import EventType
+from zk.model.event import Event
+from zk.model.db_content import DbContent, DbContentType
+from zk.model.funding_attachment import FundingAttachment
+from zk.model.funding import Funding, FundingStatus, FundingType
+from zk.model.funding_review import FundingReview
+from zk.model.location import Location
+from zk.model.time_slot import TimeSlot
+from zk.model.schedule import Schedule
+from zk.model.rego_note import RegoNote
+from zk.model.rego_room import RegoRoom
+from zk.model.social_network import SocialNetwork
+from zk.model.travel import Travel
+from zk.model.voucher import Voucher
+from zk.model.special_offer import SpecialOffer
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import factory
 from factory.alchemy import SQLAlchemyModelFactory
@@ -45,12 +60,15 @@ class _NameIdFactory(_ModelFactory):
     name = factory.Sequence(lambda n: "name %03d" % n)
 
 
+class EventTypeFactory(_NameIdFactory):
+    class Meta: model = EventType
 
 class TravelAssistanceTypeFactory(_NameIdFactory):
     class Meta: model = TravelAssistanceType
 
-class RoleFactory(_NameIdFactory):
+class RoleFactory(_ModelFactory):
     class Meta: model = Role
+    name = factory.Sequence(lambda n: "name %03d" % n)
 
 class AccommodationAssistanceTypeFactory(_NameIdFactory):
     class Meta: model = AccommodationAssistanceType
@@ -67,6 +85,14 @@ class ProposalTypeFactory(_NameIdFactory):
 class StreamFactory(_NameIdFactory):
     class Meta: model = Stream
 
+class EventFactory(_ModelFactory):
+    class Meta: model = Event
+
+    id        = factory.Sequence(lambda n: n)
+    type      = factory.SubFactory(EventTypeFactory)
+    exclusive = True
+
+
 class ConfigFactory(_ModelFactory):
     class Meta: model = Config
 
@@ -77,6 +103,7 @@ class ConfigFactory(_ModelFactory):
 
 class CeilingFactory(_ModelFactory):
     class Meta: model = Ceiling
+    id        = factory.Sequence(lambda n: n)
     name      = factory.Sequence(lambda n: "name%03d" % n)
 
 class URLHashFactory(_ModelFactory):
@@ -139,20 +166,23 @@ class CompletePersonFactory(PersonFactory):
     def reset_sequence(cls):
         PersonFactory.reset_sequence()
 
+class FulfilmentGroupFactory(_ModelFactory):
+    class Meta: model = FulfilmentGroup
+    person = factory.SubFactory(PersonFactory)
+    code   = factory.Sequence(lambda n: "%s %03d" % (faker.word(), n))
+
 class FulfilmentStatusFactory(_ModelFactory):
     class Meta: model = FulfilmentStatus
-    id                     = factory.Sequence(lambda n: n)
-    name                   = factory.Sequence(lambda n: "status %03d" % n)
+    # Can't set id, upsets postgres auto-increment (somehow...)
+    name = factory.Sequence(lambda n: "%s%i" % (faker.word(), n))
 
 class FulfilmentTypeFactory(_ModelFactory):
     class Meta: model = FulfilmentType
-    id                     = factory.Sequence(lambda n: n)
     initial_status         = factory.SubFactory(FulfilmentStatusFactory)
     name                   = factory.Sequence(lambda n: "type %03d" % n)
 
 class FulfilmentFactory(_ModelFactory):
     class Meta: model = Fulfilment
-    id                     = factory.Sequence(lambda n: n)
     person                 = factory.SubFactory(PersonFactory)
     type                   = factory.SubFactory(FulfilmentTypeFactory)
     status                 = factory.SubFactory(FulfilmentStatusFactory)
@@ -162,10 +192,10 @@ class ProductCategoryFactory(_ModelFactory):
     id                     = factory.Sequence(lambda n: n)
     name                   = factory.Sequence(lambda n: "product category %03d" % n)
     description            = factory.Sequence(lambda n: "factory generated category %03d" % n)
-    display                = 'radio'
-    display_mode           = 'grid'
-    display_order          = 10
-    invoice_free_products  = True
+    display                = factory.LazyAttribute(lambda x: ['radio', 'select', 'checkbox', 'qty'][faker.pyint() % 4])
+    display_mode           = factory.LazyAttribute(lambda x: ['grid', 'shirt'][faker.pyint() % 2])
+    display_order          = factory.LazyAttribute(lambda x: faker.pyint())
+    invoice_free_products  = factory.LazyAttribute(lambda x: faker.boolean())
 
 class ProductFactory(_ModelFactory):
     class Meta: model = Product
@@ -270,6 +300,7 @@ class InvoiceItemFactory(_ModelFactory):
 class RegistrationFactory(_ModelFactory):
     class Meta: model = Registration
     id = factory.Sequence(lambda n: n)
+    person = factory.SubFactory(CompletePersonFactory)
 
 
 class RegistrationProductFactory(_ModelFactory):
@@ -277,3 +308,120 @@ class RegistrationProductFactory(_ModelFactory):
     registration_id = factory.SubFactory(RegistrationFactory)
     product_id = factory.SubFactory(ProductFactory)
     qty = 1
+
+class DbContentTypeFactory(_NameIdFactory):
+    class Meta: model = DbContentType
+
+class DbContentFactory(_ModelFactory):
+    class Meta: model = DbContent
+    title                       = factory.LazyAttribute(lambda x: faker.sentence(nb_words=3))
+    type                        = factory.SubFactory(DbContentTypeFactory)
+    url                         = factory.LazyAttribute(lambda x: faker.url())
+    body                        = factory.LazyAttribute(lambda x: "\n\n".join(faker.paragraphs(nb=3)))
+    creation_timestamp          = factory.LazyAttribute(lambda x: faker.date_time())
+    publish_timestamp           = factory.LazyAttribute(lambda x: faker.date_time())
+    last_modification_timestamp = factory.LazyAttribute(lambda x: faker.date_time())
+
+class FundingStatusFactory(_NameIdFactory):
+    class Meta: model = FundingStatus
+
+class FundingTypeFactory(_NameIdFactory):
+    class Meta: model = FundingType
+    active       = factory.LazyAttribute(lambda x: faker.boolean())
+    note         = factory.LazyAttribute(lambda x: faker.sentence(nb_words=3))
+    notify_email = factory.LazyAttribute(lambda x: faker.email())
+
+class FundingFactory(_ModelFactory):
+    class Meta: model = Funding
+    person                  = factory.SubFactory(CompletePersonFactory)
+    status                  = factory.SubFactory(FundingStatusFactory)
+    type                    = factory.SubFactory(FundingTypeFactory)
+    male                    = factory.LazyAttribute(lambda x: faker.boolean())
+    why_attend              = factory.LazyAttribute(lambda x: faker.sentence(nb_words=3))
+    how_contribute          = factory.LazyAttribute(lambda x: faker.sentence(nb_words=3))
+    financial_circumstances = factory.LazyAttribute(lambda x: faker.sentence(nb_words=3))
+    diverse_groups          = factory.LazyAttribute(lambda x: faker.sentence(nb_words=3))
+    supporting_information  = factory.LazyAttribute(lambda x: faker.sentence(nb_words=3))
+    prevlca                 = factory.LazyAttribute(lambda x: " ".join([faker.word() for i in range(5)]))
+
+
+class FundingAttachmentFactory(_ModelFactory):
+    class Meta: model = FundingAttachment
+    funding  = factory.SubFactory(FundingFactory)
+    filename = factory.LazyAttribute(lambda x: faker.word())
+    content  = factory.LazyAttribute(lambda x: bytes(faker.word()))
+
+class FundingReviewFactory(_ModelFactory):
+    class Meta: model = FundingReview
+    funding  = factory.SubFactory(FundingFactory)
+    reviewer = factory.SubFactory(CompletePersonFactory)
+    score    = factory.LazyAttribute(lambda x: faker.pyint())
+    comment  = factory.LazyAttribute(lambda x: faker.sentence(nb_words=3))
+
+class TimeSlotFactory(_ModelFactory):
+    class Meta: model = TimeSlot
+    id   = factory.Sequence(lambda n: n)
+    start_time      = factory.LazyAttribute(lambda x: faker.date_time())
+    end_time        = factory.LazyAttribute(lambda x: faker.date_time_between_dates(datetime_start=x.start_time, datetime_end=x.start_time+timedelta(days=1)))
+    primary         = factory.LazyAttribute(lambda x: faker.boolean())
+    heading         = factory.LazyAttribute(lambda x: faker.boolean())
+
+class LocationFactory(_ModelFactory):
+    class Meta: model = Location
+    display_name  = factory.LazyAttribute(lambda x: faker.sentence(nb_words=3))
+    display_order = factory.LazyAttribute(lambda x: faker.pyint())
+    capacity      = factory.LazyAttribute(lambda x: faker.pyint())
+
+class ScheduleFactory(_ModelFactory):
+    class Meta: model = Schedule
+    overflow     = factory.LazyAttribute(lambda x: faker.boolean())
+    video_url    = factory.LazyAttribute(lambda x: faker.url())
+    audio_url    = factory.LazyAttribute(lambda x: faker.url())
+    slide_url    = factory.LazyAttribute(lambda x: faker.url())
+    time_slot    = factory.SubFactory(TimeSlotFactory)
+    location     = factory.SubFactory(LocationFactory)
+    event        = factory.SubFactory(EventFactory)
+
+class RegoNoteFactory(_ModelFactory):
+    class Meta: model = RegoNote
+    rego = factory.SubFactory(RegistrationFactory)
+    by   = factory.SubFactory(PersonFactory)
+    note = factory.LazyAttribute(lambda x: faker.sentence(nb_words=3))
+    block = factory.LazyAttribute(lambda x: faker.boolean())
+    # creation_timestamp & last_modification_timestamp auto-set
+
+class RegoRoomFactory(_ModelFactory):
+    class Meta: model = RegoRoom
+    rego = factory.SubFactory(RegistrationFactory)
+    by   = factory.SubFactory(CompletePersonFactory)
+    room = factory.LazyAttribute(lambda x: faker.sentence(nb_words=3))
+    # creation_timestamp & last_modification_timestamp auto-set
+
+class SocialNetworkFactory(_ModelFactory):
+    class Meta: model = SocialNetwork
+    name = factory.Sequence(lambda n: "%s%i" % (faker.word(), n))
+    logo = factory.LazyAttribute(lambda x: faker.word())
+    url  = factory.LazyAttribute(lambda x: faker.url())
+
+class TravelFactory(_ModelFactory):
+    class Meta: model = Travel
+    person = factory.SubFactory(PersonFactory)
+    origin_airport = factory.LazyAttribute(lambda x: faker.word())
+    destination_airport = factory.LazyAttribute(lambda x: faker.word())
+    flight_details = factory.LazyAttribute(lambda x: faker.sentence(nb_words=3))
+
+class VoucherFactory(_ModelFactory):
+    class Meta: model = Voucher
+
+    code = factory.Sequence(lambda n: "%s%i" % (faker.word(), n))
+    comment = factory.LazyAttribute(lambda x: faker.sentence(nb_words=8))
+    leader = factory.SubFactory(PersonFactory)
+    # creation_timestamp & last_modification_timestamp auto-set
+
+class SpecialOfferFactory(_ModelFactory):
+    class Meta: model = SpecialOffer
+
+    enabled = factory.LazyAttribute(lambda x: faker.boolean())
+    name = factory.LazyAttribute(lambda x: faker.sentence(nb_words=3))
+    description = factory.LazyAttribute(lambda x: faker.sentence(nb_words=10))
+    id_name = factory.LazyAttribute(lambda x: faker.word())

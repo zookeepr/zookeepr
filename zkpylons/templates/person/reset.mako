@@ -1,7 +1,7 @@
 <%inherit file="/base.mako" />
 <h2>Reset Password</h2>
 
-${ h.form(url=h.url_for()) }
+${ h.form(url=h.url_for(), id='reset-form') }
 
 <p>
 Enter the new password for <em>${ c.conf_rec.email_address }</em> in the form below.

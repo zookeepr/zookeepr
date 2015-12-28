@@ -4,6 +4,7 @@ from pylons import request, response, session, tmpl_context as c
 from zkpylons.lib.helpers import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
+from pylons.controllers.util import abort
 
 from formencode import validators, htmlfill, ForEach, Invalid
 from formencode.variabledecode import NestedVariables
@@ -304,6 +305,9 @@ class PersonController(BaseController): #Read, Update, List
     @dispatch_on(POST="_reset_password")
     def reset_password(self, url_hash):
         c.conf_rec = PasswordResetConfirmation.find_by_url_hash(url_hash)
+
+        if c.conf_rec is None:
+            abort(404, "No such reset hash")
 
         return render('person/reset.mako')
 

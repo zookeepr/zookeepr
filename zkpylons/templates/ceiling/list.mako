@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>List ceilings</h2>
+<h2>List Ceilings</h2>
 
 % if len(c.ceiling_collection) > 0:
 <table>

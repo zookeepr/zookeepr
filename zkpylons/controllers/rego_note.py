@@ -81,6 +81,10 @@ class RegoNoteController(BaseController):
 
         defaults = h.object_to_defaults(c.rego_note, 'rego_note')
 
+        # Rename some fields to match form names
+        defaults["rego_note.rego"] = defaults["rego_note.rego_id"]
+        defaults["rego_note.by"] = defaults["rego_note.by_id"]
+
         form = render('rego_note/edit.mako')
         return htmlfill.render(form, defaults)
 
