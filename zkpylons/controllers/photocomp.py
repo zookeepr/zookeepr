@@ -7,7 +7,7 @@ import re
 import sys
 import time
 
-import Image
+from PIL import Image
 
 from pylons import request, response, session, tmpl_context as c
 from pylons.controllers.util import abort
