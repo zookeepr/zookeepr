@@ -3,7 +3,7 @@ WebOb<1.4
 alembic>=0.4.2
 pydns
 lxml
-PIL
+pillow
 psycopg2
 pyramid
 pyramid_debugtoolbar

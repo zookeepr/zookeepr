@@ -32,7 +32,7 @@
       </div>
 % else: #red progress bar
       <div class="progress">
-        <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced())}" aria-valuemin="0" aria-valuemax="100" style="width: ${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced())};">
+        <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced())}" aria-valuemin="0" aria-valuemax="100" style="width: ${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced())};">
           ${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced()) }
         </div>
       </div>
@@ -54,7 +54,7 @@
       </div>
 % else: #red progress bar
       <div class="progress">
-        <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced())}" aria-valuemin="0" aria-valuemax="100" style="width: ${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced())};">
+        <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced())}" aria-valuemin="0" aria-valuemax="100" style="width: ${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced())};">
           ${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced()) }
         </div>
       </div>
