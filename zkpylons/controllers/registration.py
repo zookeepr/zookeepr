@@ -329,7 +329,7 @@ class RegistrationController(BaseController):
         if Config.get('personal_info', category='rego')['home_address'] == 'no':
             defaults['person.address1'] = 'not available'
             defaults['person.city'] = 'not available'
-            defaults['person.postcode'] = 'not available'
+            defaults['person.postcode'] = 'none'
 
         if c.signed_in_person:
             for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country', 'phone', 'mobile', 'company', 'i_agree']:

@@ -459,7 +459,7 @@ class PersonController(BaseController): #Read, Update, List
             if Config.get('personal_info', category='rego')['home_address'] == 'no':
                 defaults['person.address1'] = 'not available'
                 defaults['person.city'] = 'not available'
-                defaults['person.postcode'] = 'not available'
+                defaults['person.postcode'] = 'none'
 
             c.social_networks = SocialNetwork.find_all()
 
