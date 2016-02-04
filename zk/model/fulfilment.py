@@ -175,7 +175,7 @@ class Fulfilment(Base):
     person = sa.orm.relation(Person)
     type = sa.orm.relation(FulfilmentType)
     status = sa.orm.relation(FulfilmentStatus)
-    groups = sa.orm.relation(FulfilmentGroup, secondary=fulfilment_group_map, backref='fulfilments')
+    groups = sa.orm.relation(FulfilmentGroup, secondary=fulfilment_group_map, backref=sa.orm.backref('fulfilments', order_by='Fulfilment.type_id'))
 
     # methods
     @classmethod
