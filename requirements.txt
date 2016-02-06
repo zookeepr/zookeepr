@@ -1,6 +1,7 @@
 paste<2.0
 WebOb<1.4
 alembic>=0.4.2
+venusian
 pydns
 lxml
 PIL
