@@ -5,7 +5,7 @@ env:
 # command to install dependencies
 install: "pip install tox"
 # command to run tests
-script: tox -e $TOX_ENV
+script: tox -c tox.pip18.ini -e $TOX_ENV
 addons:
   postgresql: 9.3
 before_script:
