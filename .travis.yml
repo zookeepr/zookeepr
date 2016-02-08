@@ -8,5 +8,8 @@ install: "pip install tox"
 script: tox -c tox.pip6.ini -e $TOX_ENV
 addons:
   postgresql: 9.3
+  apt:
+    packages:
+      - pwgen
 before_script:
   - psql -c 'create database zktest;' -U postgres
