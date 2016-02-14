@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-    <h2>Edit stream</h2>
+    <h2>Edit Stream</h2>
 
     ${ h.form(h.url_for(id=c.stream.id)) }
 <%include file="form.mako" />

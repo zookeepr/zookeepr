@@ -14,6 +14,7 @@ Install these with your favourite package manager (eg apt-get).
  * postgresql
  * python-virtualenv
  * zlib1g-dev
+ * pwgen
 
 Creating a development environment
 ----------------------------------

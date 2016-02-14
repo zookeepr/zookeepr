@@ -38,7 +38,7 @@
 %   if c.admin:
         <td>
 %       if voucher.leader:
-          ${ voucher.leader.firstname |h} ${ voucher.leader.lastname |h}
+            ${ voucher.leader.fullname }
           &lt;${ voucher.leader.email_address |h}&gt;
 %       else:
           (no leader)

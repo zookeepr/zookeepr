@@ -5,7 +5,7 @@
 
 <%inherit file="/base.mako" />
 
-    <h2>View product</h2>
+    <h2>View Product</h2>
 
     <p><b>Description:</b> ${ c.product.description | h }<br></p>
     <p><b>Badge Text:</b> ${ c.product.badge_text | h }<br></p>

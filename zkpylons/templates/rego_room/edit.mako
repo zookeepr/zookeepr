@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>Edit page</h2>
+<h2>Edit Rego Room</h2>
 ${ h.form(h.url_for(), multipart=True) }
 <%include file="form.mako" />
 ${ h.end_form() }

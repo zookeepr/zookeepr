@@ -45,7 +45,7 @@ class Event(Base):
     def computed_title(self):
         if self.proposal:
             return self.proposal.title
-        elif '::' in self.title:
+        elif self.title and '::' in self.title:
             return self.title.split('::')[2]
         else:
             return self.title

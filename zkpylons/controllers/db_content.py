@@ -64,14 +64,14 @@ class DbContentController(BaseController):
     def new(self):
         if len(c.db_content_types) is 0:
             h.flash("Configuration Error: Please make sure at least one content type exists.", 'error')
-        if DbContentType.find_by_name("News") is None:
+        if DbContentType.find_by_name("News", abort_404=False) is None:
             h.flash("Configuration Error: Please make sure the 'News' content type exists for full functionality.", 'error')
-        if DbContentType.find_by_name("In the press") is None:
+        if DbContentType.find_by_name("In the press", abort_404=False) is None:
             h.flash("Configuration Error: Please make sure the 'In the press' content type exists for full functionality.", 'error')
         c.db_content = DbContent()
         defaults = h.object_to_defaults(c.db_content, 'db_content')
         if request.GET.has_key('url'):
-            defaults['db_content.type'] = 1 # This is bad... we're assuming we have #1 as new page
+            defaults['db_content.type'] = find_by_name('Page', abort_404=False)
             if request.GET['url'].startswith('/'):
                 defaults['db_content.url'] = str(request.GET['url'])[1:]
             else:
@@ -110,7 +110,7 @@ class DbContentController(BaseController):
 
         if c.db_content.type.name == 'Redirect':
             redirect_to(c.db_content.body.encode("latin1"), _code=301)
-	c.html_headers, c.html_body, c.menu_contents = self.parse_dbpage(
+	c.html_headers, c.html_body, c.menu_contents = self._parse_dbpage(
             c.db_content.body)
         return render('/db_content/view.mako')
 
@@ -178,9 +178,7 @@ class DbContentController(BaseController):
 
     def list_news(self):
         if c.db_content_types:
-            page = 1
-            if request.GET.has_key('page'):
-                page = request.GET['page']
+            page = request.GET.get('page', 1)
             pagination = paginate.Page(DbContent.find_all_by_type("News"), page = page, items_per_page = 10)
 
             c.db_content_pages = pagination
@@ -192,9 +190,7 @@ class DbContentController(BaseController):
 
     def list_press(self):
         if c.db_content_types:
-            page = 1
-            if request.GET.has_key('page'):
-                page = request.GET['page']
+            page = request.GET.get('page', 1)
             pagination = paginate.Page(DbContent.find_all_by_type("In the press"), page = page, items_per_page = 10)
 
             c.db_content_pages = pagination
@@ -213,15 +209,15 @@ class DbContentController(BaseController):
         return render('/db_content/rss_news.mako')
 
     @authorize(h.auth.has_organiser_role)
+    @dispatch_on(POST="_upload")
     def upload(self):
-        directory = get_path('public_path')
-        try:
-            if request.GET['folder'] is not None:
-                directory += request.GET['folder']
-                c.current_folder = request.GET['folder']
-        except KeyError:
-            directory = get_path('public_path') + "/"
-            c.current_folder = '/'
+        c.no_theme = request.GET.get('no_theme') == 'true'
+        redirect_to(action="list_files", folder=request.GET.get('folder', '/'), no_theme=c.no_theme)
+
+    @authorize(h.auth.has_organiser_role)
+    def _upload(self):
+        c.current_folder = request.GET.get('folder', '/')
+        directory = get_path('public_path') + c.current_folder
 
         if hasattr(request.POST['myfile'], 'value'):
             file_data = request.POST['myfile'].value
@@ -229,65 +225,73 @@ class DbContentController(BaseController):
             fp.write(file_data)
             fp.close()
             h.flash("File Uploaded.")
-        c.no_theme = 'false'
-        if request.GET.has_key('no_theme'):
-            if request.GET['no_theme'] == 'true':
-                c.no_theme = 'true'
+        c.no_theme = request.GET.get('no_theme') == 'true'
         redirect_to(action="list_files", folder=c.current_folder, no_theme=c.no_theme)
 
     @authorize(h.auth.has_organiser_role)
+    @dispatch_on(POST="_delete_folder")
     def delete_folder(self):
         try:
-            if request.GET['folder'] is not None:
-                c.folder += request.GET['folder']
-                c.current_folder += request.GET['current_path']
+            c.folder = request.GET['folder']
+            c.current_folder = request.GET['current_path']
         except KeyError:
            abort(404)
 
         directory = get_path('public_path')
-        defaults = dict(request.POST)
-        if defaults:
-            c.no_theme = 'false'
-            if request.GET.has_key('no_theme'):
-                if request.GET['no_theme'] == 'true':
-                    c.no_theme = 'true'
-            try:
-                os.rmdir(directory + c.folder)
-            except OSError:
-                h.flash("Can not delete. The folder contains items.", 'error')
-                redirect_to(action="list_files", folder=c.current_folder, no_theme = c.no_theme)
-            h.flash("Folder deleted.")
-            redirect_to(action="list_files", folder=c.current_folder, no_theme = c.no_theme)
-        c.no_theme = False
-        if request.GET.has_key('no_theme'):
-            if request.GET['no_theme'] == 'true':
-                c.no_theme = True
+        c.no_theme = request.GET.get('no_theme') == 'true'
         return render('/db_content/delete_folder.mako')
 
     @authorize(h.auth.has_organiser_role)
-    def delete_file(self):
+    def _delete_folder(self):
         try:
-            if request.GET['file'] is not None:
-                c.file += request.GET['file']
-                c.current_folder += request.GET['folder']
+            c.folder = request.GET['folder']
+            c.current_folder = request.GET['current_path']
         except KeyError:
            abort(404)
 
-        directory = get_path('public_path')
-        defaults = dict(request.POST)
-        if defaults:
-            os.remove(directory + c.file)
-            h.flash("File Removed")
-            c.no_theme = 'false'
-            if request.GET.has_key('no_theme'):
-                if request.GET['no_theme'] == 'true':
-                    c.no_theme = 'true'
-            redirect_to(action="list_files", folder=c.current_folder, no_theme = c.no_theme)
-        c.no_theme = False
-        if request.GET.has_key('no_theme'):
-            if request.GET['no_theme'] == 'true':
-                c.no_theme = True
+        c.no_theme = request.GET.get('no_theme') == 'true'
+
+        try:
+            os.rmdir(get_path('public_path') + c.folder)
+        except OSError:
+            h.flash("Can not delete. The folder contains items.", 'error')
+        else:
+            h.flash("Folder deleted.")
+
+        redirect_to(action="list_files", folder=c.current_folder, no_theme = c.no_theme)
+
+    @authorize(h.auth.has_organiser_role)
+    @dispatch_on(POST="_delete_file")
+    def delete_file(self):
+        try:
+            c.file = request.GET['file']
+            c.current_folder = request.GET['folder']
+        except KeyError:
+           abort(404)
+
+        c.no_theme = request.GET.get('no_theme') == 'true'
+
         return render('/db_content/delete_file.mako')
+
+    @authorize(h.auth.has_organiser_role)
+    def _delete_file(self):
+        try:
+            c.file = request.GET['file']
+            c.current_folder = request.GET['folder']
+        except KeyError:
+           abort(404)
+
+        c.no_theme = request.GET.get('no_theme') == 'true'
+
+        try:
+            os.remove(get_path('public_path') + c.file)
+        except OSError:
+            h.flash("Could not delete file")
+        else:
+            h.flash("File Removed")
+
+        redirect_to(action="list_files", folder=c.current_folder, no_theme = c.no_theme)
+
 
     @authorize(h.auth.has_organiser_role)
     def list_files(self):
@@ -302,27 +306,18 @@ class DbContentController(BaseController):
             tupleList.sort()
             return [x[1] for x in tupleList]
 
-        directory = get_path('public_path')
-        download_path = get_path('public_html')
-        current_path = "/"
-        try:
-            if request.GET['folder'] is not None:
-                directory += request.GET['folder']
-                download_path += request.GET['folder']
-                current_path = request.GET['folder']
-        except KeyError:
-            download_path += '/'
+        directory = get_path('public_path') + request.GET.get('folder', '')
+        c.download_path = get_path('public_html') + request.GET.get('folder', '/')
+        c.current_path = "/" + request.GET.get('folder', '')
 
         defaults = dict(request.POST)
-        if defaults:
+        if dict(request.POST) and request.POST.has_key('folder'):
             try:
-                if request.POST['folder'] is not None:
-                    os.mkdir(directory + request.POST['folder'])
+                os.mkdir(directory + request.POST['folder'])
             except KeyError:
                 h.flash("Error creating folder. Check file permissions.", 'error')
             else:
                 h.flash("Folder Created")
-
 
         files = []
         folders = []
@@ -334,12 +329,7 @@ class DbContentController(BaseController):
 
         c.file_list = caseinsensitive_sort(files)
         c.folder_list = caseinsensitive_sort(folders)
-        c.current_path = current_path
-        c.download_path = download_path
-        c.no_theme = False
-        if request.GET.has_key('no_theme'):
-            if request.GET['no_theme'] == 'true':
-                c.no_theme = True
+        c.no_theme = request.GET.get('no_theme') == 'true'
         return render('/db_content/list_files.mako')
 
     HEADER_RE = re.compile("""(?is)\s*<\s*head\s*>\s*(.*?)</\s*head\s*>\s*""")
@@ -347,7 +337,7 @@ class DbContentController(BaseController):
     NONALPHA_RE = re.compile("""(?s)(\W+)""")
     SLIDESHOW_RE = re.compile("""({{slideshow:\s*(.*?)(,\s*(.*))?}})""")
     @classmethod
-    def parse_dbpage(cls, html):
+    def _parse_dbpage(cls, html):
         #
         # Extract stuff at the start of the html between <head>..</head> so
         # it can be hoisted to the page header.
@@ -374,7 +364,7 @@ class DbContentController(BaseController):
                 menu_contents.append(li_element)
         menu_contents = '\n'.join(menu_contents)
         #
-        # Build up the slidshow.
+        # Build up the slideshow.
         #
         slideshow = cls.SLIDESHOW_RE.findall(html_body)
         if slideshow.__len__() > 0:

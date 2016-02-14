@@ -1,55 +1,30 @@
 from routes import url_for
-
-from zk.model.role import Role
+from BeautifulSoup import BeautifulSoup
 
 from .fixtures import CompletePersonFactory, RoleFactory
-from .utils import do_login
+from .crud_helper import CrudHelper
 
 
-class TestRole(object):
+class TestRole(CrudHelper):
+    def test_view(self, app, db_session):
+        target = RoleFactory(name='Bob', pretty_name='Ross', display_order=23, comment='Beefcake')
+        peeps = [CompletePersonFactory(roles=[target]) for i in range(10)]
 
-    def test_create(self, app, db_session):
-        p = CompletePersonFactory(roles = [RoleFactory(name="organiser")])
-        db_session.commit()
+        resp = CrudHelper.test_view(self, app, db_session, target=target)
 
-        do_login(app, p)
-        resp = app.get(url_for(controller='role', action='new'))
-        f = resp.form
-        f['role.name']          = 'newrole'
-        f['role.pretty_name']   = 'Test created role'
-        f['role.comment']       = 'I understand why people generate this'
-        f['role.display_order'] = 23
-        resp = f.submit()
-        resp = resp.follow() # Failure indicates form validation error
+        # View also lists people with the role
+        soup = BeautifulSoup(resp.body)
+        peeps_table = soup.findAll('table')[1] # Second table
 
-        assert 'Missing value' not in unicode(resp.body, 'utf-8')
+        # 1 row per person, no heading
+        assert len(peeps_table.findAll('tr')) == len(peeps)
 
-        # Test creation
-        db_session.expunge_all()
+        # Each person row should contain their fullname, link to their profile, link to their roles
+        peeps_table_str = str(peeps_table)
+        for p in peeps:
+            assert p.fullname in peeps_table_str
+            assert url_for(controller='person', action='view', id=p.id) in peeps_table_str
+            assert url_for(controller='person', action='roles', id=p.id) in peeps_table_str
+            
 
-        roles = Role.find_all()
-        assert len(roles) == 2 # organiser and created one
 
-        new_role = roles[1] if roles[0].name == "organiser" else roles[0]
-
-        assert new_role.name == 'newrole'
-        assert new_role.pretty_name == 'Test created role'
-        assert new_role.comment == 'I understand why people generate this'
-        assert new_role.display_order == 23
-
-    def test_index(self, app, db_session):
-        p = CompletePersonFactory(roles = [RoleFactory(name="organiser")])
-        r2 = RoleFactory()
-        r3 = RoleFactory()
-        r4 = RoleFactory()
-        r5 = RoleFactory()
-        db_session.commit()
-
-        do_login(app, p)
-        resp = app.get(url_for(controller='role', action='index'))
-
-        assert "organiser" in unicode(resp.body, 'utf-8')
-        assert r2.name in unicode(resp.body, 'utf-8')
-        assert r3.name in unicode(resp.body, 'utf-8')
-        assert r4.name in unicode(resp.body, 'utf-8')
-        assert r5.name in unicode(resp.body, 'utf-8')

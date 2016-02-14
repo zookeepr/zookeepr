@@ -1,5 +1,7 @@
 <%inherit file="/base.mako" />
 
+<h2>Delete Rego Note</h2>
+
 ${ h.form(url=h.url_for()) }
 <p>
 Are you sure you want to delete this note?<br/>

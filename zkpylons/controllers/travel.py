@@ -52,7 +52,10 @@ class TravelController(BaseController):
     def _new(self):
         results = self.form_result['travel']
 
+        # TODO: This doesn't make sense, Travel controller is restricted to admins
+        #       But new template refers to each person updating their details
         c.travel = Travel(**results)
+        c.travel.person = h.signed_in_person()
         meta.Session.add(c.travel)
         meta.Session.commit()
 

@@ -81,6 +81,10 @@ class RegoRoomController(BaseController):
 
         defaults = h.object_to_defaults(c.rego_room, 'rego_room')
 
+        # Rename some fields to match form names
+        defaults["rego_room.rego"] = defaults["rego_room.rego_id"]
+        defaults["rego_room.by"] = defaults["rego_room.by_id"]
+
         form = render('rego_room/edit.mako')
         return htmlfill.render(form, defaults)
 

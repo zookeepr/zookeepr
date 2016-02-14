@@ -30,7 +30,7 @@ class TimeSlot(Base):
     heading    = sa.Column(sa.types.Boolean,  nullable = False, default=False)
 
     # relations
-    schedule = sa.orm.relation(Schedule, backref='time_slot')
+    schedule = sa.orm.relation(Schedule, backref='time_slot') # TODO: many-1, should be plural?
 
     def exclusive_event(self):
         event = None

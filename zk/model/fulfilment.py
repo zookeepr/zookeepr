@@ -131,7 +131,7 @@ class FulfilmentGroup(Base):
         super(FulfilmentGroup, self).__init__(**kwargs)
 
     def __repr__(self):
-        return '<FulfilmentGroup id=%r group=%r>' % (self.id, self.name)
+        return '<FulfilmentGroup id=%r code=%r>' % (self.id, self.code)
 
 class Fulfilment(Base):
     """ Stores details of order fulfilment

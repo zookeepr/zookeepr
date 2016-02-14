@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-    <h2>View product category</h2>
+    <h2>View Product Category</h2>
 
     <table>
       <tr class="${h.cycle('odd','even')}">

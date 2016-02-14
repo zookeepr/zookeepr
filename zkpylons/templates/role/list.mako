@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h1>List roles</h1>
+<h1>List Roles</h1>
 
 <table>
 

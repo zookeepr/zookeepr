@@ -67,8 +67,12 @@ class Person(Base):
     i_agree = sa.Column(sa.types.Boolean, nullable=False, default=False)
 
     def _create_social_network_map(network, account_name):
-       """Constructs SocialNetworkMaps from the SocialNetowkr and the
-          account_name."""
+       """Constructs SocialNetworkMaps from the SocialNetwork and the
+          account_name.
+
+          To add a social network to a person use the following syntax:
+            person.social_networks[social_network_object] = account_name_string
+          """
        return PersonSocialNetworkMap(social_network=network, account_name=account_name)
 
     # relations

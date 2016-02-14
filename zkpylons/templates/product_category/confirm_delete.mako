@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>Delete category</h2>
+<h2>Delete Category</h2>
 
 ${ h.form(h.url_for()) }
 

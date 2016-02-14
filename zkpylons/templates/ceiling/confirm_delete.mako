@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>Delete ceiling</h2>
+<h2>Delete Ceiling</h2>
 
 ${ h.form(h.url_for()) }
 

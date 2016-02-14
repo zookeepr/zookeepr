@@ -1,4 +1,6 @@
 import logging
+from collections import namedtuple
+
 
 from pylons import request, response, session, tmpl_context as c
 from zkpylons.lib.helpers import redirect_to
@@ -74,11 +76,27 @@ class CeilingController(BaseController):
 
     def view(self, id):
         c.ceiling = Ceiling.find_by_id(id)
-        return render('/ceiling/view.mako')
+        c.specials = []
+        SpecStruct = namedtuple('Special', 'id person_id reg_id fullname product is_paid diet special u18 notes')
+        for product in c.ceiling.products:
+            for invoice_item in product.invoice_items:
+                if not invoice_item.invoice.status == 'Invalid':
+                    person = invoice_item.invoice.person
+                    rego = person.registration
+                    c.specials.append(SpecStruct(
+                        id=person.id,
+                        person_id=person.id,
+                        reg_id=rego.id,
+                        fullname=person.fullname,
+                        product=invoice_item.description,
+                        is_paid=invoice_item.invoice.is_paid,
+                        diet=rego.diet,
+                        special=rego.special,
+                        u18=not(rego.over18),
+                        notes=rego.notes,
+                    ))
 
-    def special_cases(self, id):
-        c.ceiling = Ceiling.find_by_id(id)
-        return render('/ceiling/special_cases.mako')
+        return render('/ceiling/view.mako')
 
     def index(self):
         c.can_edit = True

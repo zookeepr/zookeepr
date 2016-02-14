@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>Delete product</h2>
+<h2>Delete Product</h2>
 
 ${ h.form(h.url_for()) }
 <p> Are you sure you want to delete this object?</p>

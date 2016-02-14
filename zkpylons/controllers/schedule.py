@@ -120,10 +120,6 @@ class ScheduleController(BaseController):
             c.raw = True
         return render('/schedule/table.mako')
 
-    def table_view(self, id):
-        c.schedule = Schedule.find_by_id(id)
-        return render('/schedule/table_view.mako')
-
     def ical(self):
         c.schedule_collection = Schedule.find_all()
 
@@ -209,7 +205,6 @@ class ScheduleController(BaseController):
         c.locations = Location.find_all()
         c.events = Event.find_all()
 
-
         form = render('/schedule/new.mako')
         object = { 'schedule': self.form_result }
         defaults = NewScheduleSchema().from_python(object)
@@ -276,6 +271,7 @@ class ScheduleController(BaseController):
         return render('/schedule/confirm_delete.mako')
 
     @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
+    @authorize(h.auth.has_organiser_role)
     def _delete(self, id):
         c.schedule = Schedule.find_by_id(id)
         meta.Session.delete(c.schedule)

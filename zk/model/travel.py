@@ -25,7 +25,8 @@ class Travel(Base):
     flight_details = sa.Column(sa.types.Text, nullable=False)
 
     # relations
-    person = sa.orm.relation(Person, backref=sa.orm.backref('travel', cascade="all, delete-orphan", lazy=True, uselist=False))
+    #person = sa.orm.relation(Person, backref=sa.orm.backref('travel', cascade="all, delete-orphan", uselist=False))
+    person = sa.orm.relation(lambda: Person, backref='travel', lazy='subquery')
 
 
     def __init__(self, **kwargs):

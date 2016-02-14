@@ -8,8 +8,10 @@ def do_login(app, person_or_email_address, password=None):
     else:
         email_address = person_or_email_address
 
-    resp = app.get(url_for(controller='person', action='signin'))
-    f = resp.forms[1] # TODO: Fragile
+    # Disabling cookies makes login function reentrant
+    resp = app.get(url_for(controller='person', action='signin'), headers={'Cookie':''})
+
+    f = resp.forms['signin-form']
     f['person.email_address'] = email_address
     f['person.password'] = password
     return f.submit(extra_environ=dict(REMOTE_ADDR='0.0.0.0'))

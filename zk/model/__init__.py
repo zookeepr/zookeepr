@@ -62,6 +62,8 @@ from fulfilment import Fulfilment, FulfilmentItem, FulfilmentType, FulfilmentSta
 
 from registration import Registration
 from registration_product import RegistrationProduct
+from rego_note import RegoNote
+from rego_room import RegoRoom
 
 from location import Location
 from event    import Event
@@ -70,6 +72,7 @@ from time_slot import TimeSlot
 from schedule import Schedule
 
 from voucher import Voucher, VoucherProduct
+from special_offer import SpecialOffer
 
 from db_content import DbContentType, DbContent
 

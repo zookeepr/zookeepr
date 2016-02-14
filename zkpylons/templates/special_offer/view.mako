@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-    <h2>View special offer</h2>
+    <h2>View Special Offer</h2>
 
     <table>
       <tr class="even">

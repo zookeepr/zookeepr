@@ -72,26 +72,20 @@ class FundingReviewController(BaseController):
     @dispatch_on(POST="_delete")
     def delete(self, id):
         c.review = FundingReview.find_by_id(id)
+        self._is_reviewer()
         
-        if c.review.reviewer.id != h.signed_in_person().id:
-            # Raise a no_auth error
-            h.auth.no_role()
-
         return render('/funding_review/confirm_delete.mako')
 
     @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
     def _delete(self, id):
         c.review = FundingReview.find_by_id(id)
-
-        if c.review.reviewer.id != h.signed_in_person().id:
-            # Raise a no_auth error
-            h.auth.no_role()
+        self._is_reviewer()
 
         meta.Session.delete(c.review)
         meta.Session.commit()
 
         h.flash("Review Deleted")
-        redirect_to(controller='review', action='index')
+        redirect_to(controller='funding_review', action='index')
 
     def summary(self):
         c.review_collection=FundingReview.find_all()

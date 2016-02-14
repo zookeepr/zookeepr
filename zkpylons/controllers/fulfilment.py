@@ -74,6 +74,7 @@ class FulfilmentController(BaseController):
 
     @authorize(h.auth.has_organiser_role)
     def person(self, id):
+        # TODO: This function breaks the URL model, id should be a fulfilment id
         c.person = Person.find_by_id(id)
         return render('/fulfilment/person.mako')
 
@@ -156,11 +157,13 @@ class FulfilmentController(BaseController):
         if os.path.exists(output_path):
             os.remove(output_path)
 
+        # TODO: This needs be unhardcoded
         c.fulfilment.status_id = 5
         meta.Session.commit()
 
     @authorize(h.auth.has_checkin_role)
     def swag_give(self, id):
         c.fulfilment = Fulfilment.find_by_id(id)
+        # TODO: This needs be unhardcoded
         c.fulfilment.status_id = 6
         meta.Session.commit()

@@ -15,7 +15,7 @@
   <tr class="odd">
     <td valign="top"><b>URL:</b></td><td>${ c.social_network.url }</td>
   </tr>
-<table>
+</table>
 
 <h3>Members</h3>
 
@@ -24,7 +24,8 @@
   <tr>
     <th>Name</th>
     <th>Username</th>
-%   for person in c.social_network.people:
+  </tr>
+  %   for person in sorted(c.social_network.people, key=lambda p: p.id):
   <tr>
     <td>${ h.link_to(person.fullname, url=h.url_for(controller='person', action='view', id=person.id)) }</td>
     <td>${ c.social_network.people[person] }</td>

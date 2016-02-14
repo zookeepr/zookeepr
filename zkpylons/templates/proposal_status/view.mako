@@ -9,7 +9,7 @@
       <tr>
         <th>&nbsp;</th>
         <th>Title</th>
-      <tr>
+      </tr>
 %   for proposal in c.proposal_status.proposals:
       <tr>
         <td>${ h.link_to(proposal.id, h.url_for(controller='proposal', action='view', id=proposal.id)) }</td>

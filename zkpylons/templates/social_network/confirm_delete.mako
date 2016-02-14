@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>Delete social network</h2>
+<h2>Delete Social Network</h2>
 
 ${ h.form(h.url_for()) }
 

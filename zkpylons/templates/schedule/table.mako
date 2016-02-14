@@ -64,6 +64,7 @@ def inherit(context):
     else:
       url = event.url
 %>
+## TODO: time_slot may not be set here if time is not primary
       <td class="programme_${ event.type.name }" colspan="${ len(c.locations) }" rowspan="${ (time_slot.end_time - time_slot.start_time).seconds/60/5 }">
 %   if event.publish or c.can_edit:
 %     if event.url:

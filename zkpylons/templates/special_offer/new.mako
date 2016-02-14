@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-    <h2>New special offer</h2>
+    <h2>New Special Offer</h2>
 
     ${ h.form(h.url_for(action='new')) }
 <%include file="form.mako" />

@@ -12,6 +12,7 @@ from webhelpers.text import *
 import webhelpers.constants
 from datetime import datetime
 import simplejson as json
+import markupsafe
 
 try:
     from webhelpers.pylonslib import secure_form
@@ -184,9 +185,9 @@ def line_break(text):
 def yesno(value):
     """ Display a read-only checkbox for the value provided """
     if value:
-        return '&#9745;'
+        return markupsafe.Markup('&#9745;')
     else:
-        return '&#9744;'
+        return markupsafe.Markup('&#9744;')
 
 def countries():
     """ list of countries

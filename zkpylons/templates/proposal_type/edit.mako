@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>Edit proposal type</h2>
+<h2>Edit Proposal Type</h2>
 
 ${ h.form(h.url_for(id=c.proposal_type.id)) }
 <%include file="form.mako" />

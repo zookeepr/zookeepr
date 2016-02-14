@@ -11,7 +11,7 @@ ${ h.hidden('assertion', '') }
 ${ h.end_form() }
 
         <p>Otherwise, here's how the password reset works.</p>
-${ h.form( h.url_for(), method='post') }
+	${ h.form( h.url_for(), method='post', id='pwreset-form') }
         <p>
             Enter your email address and an email will be sent to you allowing you to
             select a new password.

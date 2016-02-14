@@ -31,22 +31,13 @@ def generate_code():
 
 class NotExistingVoucherValidator(validators.FancyValidator):
     def validate_python(self, values, state):
+        # TODO: This doesn't work, code is randomly generated - this doesn't search for prefixes
         voucher = Voucher.find_by_code(values['voucher']['code'])
         error_dict = {}
         if voucher is not None:
             message = "Duplicate Voucher Code"
             error_dict = {'voucher.code': "Code already exists!"}
             raise Invalid(message, values, state, error_dict=error_dict)
-
-class ProductSchema(BaseSchema):
-    # This schema is used to validate the products submitted by the form.
-    # It is populated by _generate_product_schema through the inherited
-    #   add_field method.
-    # EG:
-    #   ProductSchema.add_field('count', validators.Int(min=1, max=100))
-    # is the same as doing this inline:
-    #   count = validators.Int(min=1, max=100)
-    pass
 
 class VoucherSchema(BaseSchema):
     count = validators.Int(min=1, max=100)
@@ -74,23 +65,18 @@ class VoucherController(BaseController):
         #   (aka schema) also needs to be dynamic.
         # Thus, this function generates a dynamic schema to validate a given set of products.
         #
+        pschema = BaseSchema()
         for category in c.product_categories:
             # handle each form input type individually as the validation is unique.
             if category.display == 'radio':
                 # min/max can't be calculated on this form. You should only have 1 selected.
-                ProductSchema.add_field('category_' + str(category.id), validators.Int(if_missing=None))
-                ProductSchema.add_field('category_' + str(category.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
-            elif category.display == 'checkbox':
+                pschema.add_field('category_' + str(category.id), validators.Int(if_missing=None))
+                pschema.add_field('category_' + str(category.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
+            else:
                 for product in category.products_nonfree:
-                    #ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
-                    # Checkbox products are handled the same as select and qty products
-                    ProductSchema.add_field('product_' + str(product.id) + '_qty', validators.Int(min=0, max=100, if_empty=0))
-                    ProductSchema.add_field('product_' + str(product.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
-            elif category.display in ('select', 'qty'):
-                for product in category.products_nonfree:
-                    ProductSchema.add_field('product_' + str(product.id) + '_qty', validators.Int(min=0, max=100, if_empty=0))
-                    ProductSchema.add_field('product_' + str(product.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
-        new_schema.add_field('products', ProductSchema)
+                    pschema.add_field('product_' + str(product.id) + '_qty', validators.Int(min=0, max=100, if_empty=0))
+                    pschema.add_field('product_' + str(product.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
+        new_schema.add_field('products', pschema)
 
     @dispatch_on(POST="_new")
     @authorize(h.auth.has_organiser_role)
