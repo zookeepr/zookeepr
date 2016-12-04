@@ -15,7 +15,7 @@ import datetime
 import random
 
 class Ceiling(Base):
-    """Stores the details of product ceilings which are used to control the sale of itmes with a limited stock
+    """Stores the details of product ceilings which are used to control the sale of items with a limited stock
     """
 
     __tablename__ = 'ceiling'
